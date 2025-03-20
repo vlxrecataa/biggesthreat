@@ -11,8 +11,8 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: "cata regele",
-  description: "made with ❤️ by biggesthreat (vlxre.cata)",
+  title: "Under Development",
+  description: "soon by biggesthreat",
 };
 
 export default function RootLayout({
