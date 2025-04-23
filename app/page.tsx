@@ -2,22 +2,131 @@
 
 import { useState } from 'react';
 import { motion } from "framer-motion";
+import { Pacifico } from "next/font/google";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-import Aurora from '@/components/ui/Aurora';
 import Particles from '@/components/ui/Particles';
-import TrueFocus from '@/components/ui/TrueFocus';
+
+import Navbar from '@/components/NavBar';
+import Stack from '@/components/Stack';
+import Contact from '@/components/Contact';
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-pacifico",
+});
+
+function ElegantShape({
+  className = "",
+  delay = 0,
+  width = 400,
+  height = 100,
+  rotate = 0,
+  gradient = "from-white/[0.08]",
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
+      animate={{ opacity: 1, y: 0, rotate }}
+      transition={{
+        duration: 2.4,
+        delay,
+        ease: [0.23, 0.86, 0.39, 0.96],
+        opacity: { duration: 1.2 },
+      }}
+      className={cn("absolute", className)}
+    >
+      <motion.div
+        animate={{ 
+          y: [0, 15, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut",
+        }}
+        style={{ width, height }}
+        className="relative"
+      >
+        <div
+          className={cn(
+            "absolute inset-0 rounded-full",
+            "bg-gradient-to-r to-transparent",
+            gradient,
+            "backdrop-blur-[2px] border-2 border-white/[0.15]",
+            "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
+            "after:absolute after:inset-0 after:rounded-full",
+            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]",
+          )}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Component() {
-  function handleNothing() {}
+  const fadeUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 1,
+        delay: 0.5 + i * 0.2,
+        ease: [0.25, 0.4, 0.25, 1],
+      },
+    }),
+  };
+
+  const shapes = [
+    {
+      delay: 0.3,
+      width: 600,
+      height: 140,
+      rotate: 12,
+      gradient: "from-indigo-500/[0.15]",
+      className: "left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+    },
+    {
+      delay: 0.5,
+      width: 500,
+      height: 120,
+      rotate: -15,
+      gradient: "from-rose-500/[0.15]",
+      className: "right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
+    },
+    {
+      delay: 0.4,
+      width: 300,
+      height: 80,
+      rotate: -8,
+      gradient: "from-violet-500/[0.15]",
+      className: "left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
+    },
+    {
+      delay: 0.6,
+      width: 200,
+      height: 60,
+      rotate: 20,
+      gradient: "from-amber-500/[0.15]",
+      className: "right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
+    },
+    {
+      delay: 0.7,
+      width: 150,
+      height: 40,
+      rotate: -25,
+      gradient: "from-cyan-500/[0.15]",
+      className: "left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
+    }
+  ];
+
   return (
     <div className="min-h-screen w-screen bg-black relative overflow-hidden">
-      <Aurora
-        colorStops={["#42f5a4", "#6ec0f0", "#51f542"]}
-        blend={1.0}
-        amplitude={1.5}
-        speed={1.0}
-      />
-      <div className="absolute top-0 left-0 w-full h-full z-20">
+      <div className="absolute top-0 left-0 w-full h-full z-30 pointer-events-none select-none">
         <Particles
           particleColors={['#ffffff', '#ffffff']}
           particleCount={1000}
@@ -29,16 +138,62 @@ export default function Component() {
           disableRotation={false}
         />
       </div>
-      <div className="text-white absolute inset-0 flex items-center justify-center z-10">
-        <TrueFocus 
-          sentence="Under Development"
-          manualMode={false}
-          blurAmount={5}
-          borderColor="cyan"
-          animationDuration={2}
-          pauseBetweenAnimations={1}
-        />
+
+      <div className="h-screen w-full flex items-center justify-center relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+        
+        <div className="absolute inset-0 overflow-hidden">
+          {shapes.map((shape, index) => (
+            <ElegantShape
+              key={index}
+              delay={shape.delay}
+              width={shape.width}
+              height={shape.height}
+              rotate={shape.rotate}
+              gradient={shape.gradient}
+              className={shape.className}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              custom={0}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
+            >
+              <Image src="https://kokonutui.com/logo.svg" alt="Logo" width={20} height={20} />
+              <span className="text-sm text-white/60 tracking-wide">Digital Studio</span>
+            </motion.div>
+
+            <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 md:mb-8 tracking-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">Crafting </span>
+                <br></br>
+                <span className={cn("bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300", pacifico.className)}>
+                  Digital Masterpieces
+                </span>
+              </h1>
+            </motion.div>
+
+            <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
+              <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
+                Crafting exceptional digital experiences through innovative design and cutting-edge technology.
+              </p>
+            </motion.div>
+          </div>
+        </div>
       </div>
+
+      <div className="absolute top-0 left-0 right-0 z-40">
+        <Navbar />
+      </div>
+
+      <Stack />
+      <Contact />
     </div>
   );
 }
