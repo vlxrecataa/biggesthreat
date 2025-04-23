@@ -11,7 +11,7 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-  title: "Digital Studio",
+  title: "Cata's Studio",
   description: "made with ❤️ by biggesthreat (vlxre.cata)",
 };
 
