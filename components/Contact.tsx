@@ -170,9 +170,8 @@ const Contact: React.FC = () => {
               variants={fadeUpVariants}
               custom={6}
             >
-              <ContactInfo icon={<MapPin className="h-5 w-5" />} text="Street, City" />
-              <ContactInfo icon={<Mail className="h-5 w-5" />} text="email@domain.com" />
-              <ContactInfo icon={<Phone className="h-5 w-5" />} text="(123) 456-soon" isLast={true} />
+              <ContactInfo icon={<MapPin className="h-5 w-5" />} text="Cluj-Napoca, Romania" />
+              <ContactInfo icon={<Mail className="h-5 w-5" />} text="vlxrecata@proton.me" isLast={true} />
             </motion.div>
           </div>
         </motion.div>
