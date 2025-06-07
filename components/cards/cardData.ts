@@ -20,7 +20,7 @@ export const frontendCards: Card[] = [
 
 export const backendCards: Card[] = [
   { image: "https://profilinator.rishav.dev/skills-assets/cplusplus-original.svg", label: "C++", color: "from-[#9dceff] via-white to-[#4a94ff]" },
-  { image: "https://commons.wikimedia.org/wiki/File:Lua-Logo.svg", label: "Lua", color: "from-[#9dceff] via-white to-[#4a94ff]" },
+  { image: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Lua-Logo.svg", label: "Lua", color: "from-[#9dceff] via-white to-[#4a94ff]" },
   { image: "https://profilinator.rishav.dev/skills-assets/mongodb-original-wordmark.svg", label: "MongoDB", color: "from-[#9dffb9] via-white to-[#4aff8a]" },
   { image: "https://profilinator.rishav.dev/skills-assets/nodejs-original-wordmark.svg", label: "Node.js", color: "from-[#9dffb9] via-white to-[#4aff8a]" },
   { image: "https://profilinator.rishav.dev/skills-assets/python-original.svg", label: "Python", color: "from-[#9dacff] via-white to-[#4a57ff]" },
