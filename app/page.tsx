@@ -1,22 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from 'react';
-import { motion } from "framer-motion";
-import { Pacifico } from "next/font/google";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-import Particles from '@/components/ui/Particles';
-
-import Navbar from '@/components/NavBar';
-import Stack from '@/components/Stack';
-import Contact from '@/components/Contact';
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-pacifico",
-});
+interface ElegantShapeProps {
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  gradient?: string;
+}
 
 function ElegantShape({
   className = "",
@@ -25,7 +19,7 @@ function ElegantShape({
   height = 100,
   rotate = 0,
   gradient = "from-white/[0.08]",
-}) {
+}: ElegantShapeProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -150, rotate: rotate - 15 }}
@@ -36,7 +30,7 @@ function ElegantShape({
         ease: [0.23, 0.86, 0.39, 0.96],
         opacity: { duration: 1.2 },
       }}
-      className={cn("absolute", className)}
+      className={`absolute ${className}`}
     >
       <motion.div
         animate={{ 
@@ -52,148 +46,390 @@ function ElegantShape({
         className="relative"
       >
         <div
-          className={cn(
-            "absolute inset-0 rounded-full",
-            "bg-gradient-to-r to-transparent",
-            gradient,
-            "backdrop-blur-[2px] border-2 border-white/[0.15]",
-            "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
-            "after:absolute after:inset-0 after:rounded-full",
-            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]",
-          )}
+          className={`absolute inset-0 rounded-full bg-gradient-to-r to-transparent ${gradient} backdrop-blur-[2px] border-2 border-white/[0.15] shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] after:absolute after:inset-0 after:rounded-full after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]`}
         />
       </motion.div>
     </motion.div>
   );
 }
 
-export default function Component() {
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        delay: 0.5 + i * 0.2,
-        ease: [0.25, 0.4, 0.25, 1],
-      },
-    }),
-  };
+interface FloatingParticleProps {
+  delay?: number;
+  initialPosition?: number;
+}
 
-  const shapes = [
-    {
-      delay: 0.3,
-      width: 600,
-      height: 140,
-      rotate: 12,
-      gradient: "from-indigo-500/[0.15]",
-      className: "left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
-    },
-    {
-      delay: 0.5,
-      width: 500,
-      height: 120,
-      rotate: -15,
-      gradient: "from-rose-500/[0.15]",
-      className: "right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
-    },
-    {
-      delay: 0.4,
-      width: 300,
-      height: 80,
-      rotate: -8,
-      gradient: "from-violet-500/[0.15]",
-      className: "left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
-    },
-    {
-      delay: 0.6,
-      width: 200,
-      height: 60,
-      rotate: 20,
-      gradient: "from-amber-500/[0.15]",
-      className: "right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
-    },
-    {
-      delay: 0.7,
-      width: 150,
-      height: 40,
-      rotate: -25,
-      gradient: "from-cyan-500/[0.15]",
-      className: "left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
-    }
-  ];
+function FloatingParticle({ delay = 0, initialPosition = 0 }: FloatingParticleProps) {
+  return (
+    <motion.div
+      initial={{ y: "100vh", opacity: 0, rotate: 0 }}
+      animate={{ 
+        y: "-100px", 
+        opacity: [0, 1, 1, 0],
+        rotate: 360 
+      }}
+      transition={{
+        duration: 10,
+        delay,
+        ease: "linear",
+        repeat: Infinity,
+        repeatDelay: Math.random() * 5,
+      }}
+      className="absolute w-1 h-1 bg-gray-500/20 rounded-full"
+      style={{ left: `${initialPosition}%` }}
+    />
+  );
+}
+
+interface GhostTextProps {
+  text: string;
+  delay?: number;
+  verticalPosition?: number;
+  repeatDelay?: number;
+}
+
+function GhostText({ text, delay = 0, verticalPosition = 50, repeatDelay = 5 }: GhostTextProps) {
+  return (
+    <motion.div
+      initial={{ x: "-100px", opacity: 0 }}
+      animate={{ 
+        x: "100vw", 
+        opacity: [0, 1, 1, 0] 
+      }}
+      transition={{
+        duration: 15,
+        delay,
+        ease: "linear",
+        repeat: Infinity,
+        repeatDelay,
+      }}
+      className="fixed text-xs text-gray-700/30 pointer-events-none z-0 font-mono select-none"
+      style={{ top: `${verticalPosition}%` }}
+    >
+      {text}
+    </motion.div>
+  );
+}
+
+const frontendSkills: string[] = [
+  'next.js', 'react', 'css3', 'javascript', 'angular', 'html5', 'jquery', 'vue.js'
+];
+
+const backendSkills: string[] = [
+  'c++', 'lua', 'mongodb', 'node.js', 'python', 'arduino', 'cassandra', 'mysql'
+];
+
+const devopsSkills: string[] = [
+  'linux', 'git', 'bash'
+];
+
+// Pre-generate random values for ghost texts to prevent re-calculation on re-renders
+const ghostTexts = [
+  { text: 'undefined is not a function', position: 15, delay: 0, repeatDelay: 8 },
+  { text: 'segmentation fault', position: 25, delay: 2, repeatDelay: 12 },
+  { text: 'access denied', position: 35, delay: 4, repeatDelay: 6 },
+  { text: 'connection timeout', position: 45, delay: 6, repeatDelay: 10 },
+  { text: 'null pointer exception', position: 55, delay: 8, repeatDelay: 7 },
+  { text: 'stack overflow', position: 65, delay: 10, repeatDelay: 9 },
+  { text: 'memory leak detected', position: 75, delay: 12, repeatDelay: 11 }
+];
+
+// Pre-generate random positions for particles
+const particlePositions = Array.from({ length: 20 }, () => Math.random() * 100);
+
+interface SkillBoxProps {
+  skill: string;
+  index: number;
+}
+
+function SkillBox({ skill, index }: SkillBoxProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ 
+        duration: 0.6, 
+        delay: index * 0.1,
+        ease: [0.23, 0.86, 0.39, 0.96]
+      }}
+      whileHover={{ 
+        y: -5,
+        transition: { duration: 0.2 }
+      }}
+      className="relative bg-gray-900/30 border border-gray-700/50 p-3 text-center cursor-default group overflow-hidden select-none"
+    >
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent opacity-0 group-hover:opacity-100"
+        initial={false}
+        transition={{ duration: 0.3 }}
+      />
+      <div className="relative z-10 text-xs text-gray-500 font-mono select-none">
+        {skill}
+      </div>
+    </motion.div>
+  );
+}
+
+interface MouseTrail {
+  id: number;
+  x: number;
+  y: number;
+}
+
+export default function MysteriousPortfolio() {
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [trails, setTrails] = useState<MouseTrail[]>([]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent): void => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      
+      const newTrail: MouseTrail = {
+        id: Date.now(),
+        x: e.clientX,
+        y: e.clientY,
+      };
+      
+      setTrails(prev => [...prev.slice(-10), newTrail]);
+      
+      setTimeout(() => {
+        setTrails(prev => prev.filter(trail => trail.id !== newTrail.id));
+      }, 1000);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
-    <div className="min-h-screen w-screen bg-black relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full z-30 pointer-events-none select-none">
-        <Particles
-          particleColors={['#ffffff', '#ffffff']}
-          particleCount={1000}
-          particleSpread={10}
-          speed={0.05}
-          particleBaseSize={50}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
+    <div className="h-screen w-full bg-gray-950 text-gray-300 font-mono overflow-hidden cursor-crosshair relative select-none">
+      {/* Background Pattern */}
+      <div className="fixed inset-0 opacity-[0.02] z-0">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000),
+              linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)
+            `,
+            backgroundSize: '2px 2px',
+            backgroundPosition: '0 0, 1px 1px',
+          }}
         />
       </div>
 
-      <div className="h-screen w-full flex items-center justify-center relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
-        
-        <div className="absolute inset-0 overflow-hidden">
-          {shapes.map((shape, index) => (
-            <ElegantShape
-              key={index}
-              delay={shape.delay}
-              width={shape.width}
-              height={shape.height}
-              rotate={shape.rotate}
-              gradient={shape.gradient}
-              className={shape.className}
-            />
-          ))}
+      {/* Elegant Shapes */}
+      <ElegantShape 
+        className="top-20 -left-32 z-0" 
+        delay={0.5}
+        width={300}
+        height={80}
+        rotate={-25}
+        gradient="from-white/[0.04]"
+      />
+      <ElegantShape 
+        className="top-60 -right-40 z-0" 
+        delay={1.2}
+        width={250}
+        height={60}
+        rotate={35}
+        gradient="from-white/[0.06]"
+      />
+      <ElegantShape 
+        className="bottom-40 left-10 z-0" 
+        delay={2.0}
+        width={200}
+        height={50}
+        rotate={-45}
+        gradient="from-white/[0.05]"
+      />
+
+      {/* Floating Particles */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {Array.from({ length: 20 }, (_, i) => (
+          <FloatingParticle 
+            key={i} 
+            delay={i * 0.5} 
+            initialPosition={particlePositions[i]}
+          />
+        ))}
+      </div>
+
+      {/* Ghost Texts */}
+      {ghostTexts.map((ghost, i) => (
+        <GhostText 
+          key={i} 
+          text={ghost.text} 
+          delay={ghost.delay} 
+          verticalPosition={ghost.position}
+          repeatDelay={ghost.repeatDelay}
+        />
+      ))}
+
+      {/* Mouse Trails */}
+      {trails.map((trail) => (
+        <motion.div
+          key={trail.id}
+          initial={{ opacity: 0.3, scale: 1 }}
+          animate={{ opacity: 0, scale: 0 }}
+          transition={{ duration: 1 }}
+          className="fixed w-0.5 h-0.5 bg-gray-600/20 rounded-full pointer-events-none z-0"
+          style={{
+            left: trail.x,
+            top: trail.y,
+          }}
+        />
+      ))}
+
+      <div className="relative z-10 h-full flex flex-col justify-center px-6 py-8">
+        {/* Header */}
+        <motion.header 
+          className="text-center mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2, delay: 0.5 }}
+        >
+          <motion.h1 
+            className="text-4xl md:text-6xl font-light text-gray-800 relative mb-4 select-none"
+            animate={{ 
+              x: [0, -2, 2, -1, 1, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: "loop",
+              ease: "easeInOut",
+            }}
+          >
+            <span className="relative">
+              biggesthreat
+              <motion.span
+                className="absolute top-0 left-0.5 text-red-500/10"
+                animate={{ 
+                  clipPath: [
+                    "inset(20% 0 60% 0)",
+                    "inset(40% 0 40% 0)",
+                    "inset(20% 0 60% 0)"
+                  ]
+                }}
+                transition={{
+                  duration: 0.3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              >
+                biggesthreat
+              </motion.span>
+              <motion.span
+                className="absolute top-0 -left-0.5 text-cyan-500/10"
+                animate={{ 
+                  clipPath: [
+                    "inset(60% 0 20% 0)",
+                    "inset(70% 0 10% 0)",
+                    "inset(60% 0 20% 0)"
+                  ]
+                }}
+                transition={{
+                  duration: 0.3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              >
+                biggesthreat
+              </motion.span>
+            </span>
+          </motion.h1>
+          <motion.p 
+            className="text-xs text-gray-600 tracking-[4px] uppercase opacity-70 select-none"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 0.7, y: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            void.exe
+          </motion.p>
+        </motion.header>
+
+        <div className="flex-1 flex flex-col justify-center space-y-8">
+          {/* Frontend Section */}
+          <motion.section 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <h2 className="text-lg text-gray-700 mb-6 text-center relative select-none">
+              frontend.arsenal
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-12 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent" />
+            </h2>
+            <div className="grid grid-cols-4 md:grid-cols-8 gap-4 max-w-4xl mx-auto">
+              {frontendSkills.map((skill, index) => (
+                <SkillBox key={skill} skill={skill} index={index} />
+              ))}
+            </div>
+          </motion.section>
+
+          {/* Backend Section */}
+          <motion.section 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            <h2 className="text-lg text-gray-700 mb-6 text-center relative select-none">
+              backend.protocols
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-12 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent" />
+            </h2>
+            <div className="grid grid-cols-4 md:grid-cols-8 gap-4 max-w-4xl mx-auto">
+              {backendSkills.map((skill, index) => (
+                <SkillBox key={skill} skill={skill} index={index} />
+              ))}
+            </div>
+          </motion.section>
+
+          {/* DevOps Section */}
+          <motion.section 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 2 }}
+          >
+            <h2 className="text-lg text-gray-700 mb-6 text-center relative select-none">
+              devops.machinery
+              <div className="absolute bottom-[-5px] left-1/2 transform -translate-x-1/2 w-12 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent" />
+            </h2>
+            <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
+              {devopsSkills.map((skill, index) => (
+                <SkillBox key={skill} skill={skill} index={index} />
+              ))}
+            </div>
+          </motion.section>
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              custom={0}
-              variants={fadeUpVariants}
-              initial="hidden"
-              animate="visible"
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
-            >
-              <Image src="https://kokonutui.com/logo.svg" alt="Logo" width={20} height={20} />
-              <span className="text-sm text-white/60 tracking-wide">Cata's Studio</span>
-            </motion.div>
-
-            <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 md:mb-8 tracking-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">Crafting </span>
-                <br></br>
-                <span className={cn("bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300", pacifico.className)}>
-                  Digital Masterpieces
-                </span>
-              </h1>
-            </motion.div>
-
-            <motion.div custom={2} variants={fadeUpVariants} initial="hidden" animate="visible">
-              <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                Crafting exceptional digital experiences through innovative design and cutting-edge technology.
-              </p>
-            </motion.div>
+        {/* Terminal Status */}
+        <motion.section 
+          className="max-w-2xl mx-auto mt-8"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 2.5 }}
+        >
+          <div className="bg-gray-950/80 border border-gray-700 p-4 font-mono select-none">
+            <div className="text-gray-500 text-xs mb-2">
+              ~/threat/profile$ cat status.txt
+            </div>
+            <div className="text-gray-600 text-sm space-y-1">
+              <div>&gt; entity.status: active</div>
+              <div>&gt; threat.level: classified</div>
+              <div>&gt; location: somewhere in the void</div>
+              <div>&gt; mission: crafting digital nightmares</div>
+              <div>
+                &gt; <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                  className="inline-block"
+                >
+                  _
+                </motion.span>
+              </div>
+            </div>
           </div>
-        </div>
+        </motion.section>
       </div>
-
-      <div className="absolute top-0 left-0 right-0 z-40">
-        <Navbar />
-      </div>
-
-      <Stack />
-      <Contact />
     </div>
   );
 }
